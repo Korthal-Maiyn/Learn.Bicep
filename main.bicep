@@ -1,15 +1,14 @@
-﻿@allowed([
+﻿param location string = 'australiaeast'
+param storageAccountName string = 'korthcore${uniqueString(resourceGroup().id)}'
+param appServiceAppName string = 'korthcore-${uniqueString(resourceGroup().id)}-${environmentType}'
+
+@allowed([
   'dev'
   'prod'
 ])
 param environmentType string
-param location string = 'australiaeast'
-param storageAccountName string = 'korthcore${uniqueString(resourceGroup().id)}'
-param appServiceAppName string = 'korthcore-${uniqueString(resourceGroup().id)}-${environmentType}'
 
-var appServicePlanName = 'korthcore-plan'
 var storageAccountSkuName = (environmentType == 'prod') ? 'Standard_GRS' : 'Standard_LRS'
-var appServicePlanSkuName = (environmentType == 'prod') ? 'P2_V3' : 'F1'
 
 resource storageAccount 'Microsoft.Storage/storageAccounts@2021-08-01' = {
   name: storageAccountName
@@ -23,19 +22,13 @@ resource storageAccount 'Microsoft.Storage/storageAccounts@2021-08-01' = {
   }
 }
 
-resource appServicePlan 'Microsoft.Web/serverfarms@2021-03-01' = {
-  name: appServicePlanName
-  location: location
-  sku: {
-    name: appServicePlanSkuName
+module appService 'modules/appService.bicep' = {
+  name: 'appService'
+  params: {
+    location: location
+    appServiceAppName: appServiceAppName
+    environmentType: environmentType
   }
 }
 
-resource appServiceApp 'Microsoft.Web/sites@2021-03-01' = {
-  name: appServiceAppName
-  location: location
-  properties: {
-    serverFarmId: appServicePlan.id
-    httpsOnly: true
-  }
-}
+output appServiceAppHostName string = appService.outputs.appServiceAppHostName
