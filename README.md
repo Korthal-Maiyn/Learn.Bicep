@@ -1,5 +1,5 @@
-# Welcome to GitHub Desktop!
+# Learn Bicep
 
-This is your README. READMEs are where you can communicate what your project is and how to use it.
+- [Fundamentals of Bicep - Learn | Microsoft Docs](https://docs.microsoft.com/en-gb/learn/paths/fundamentals-bicep/)
 
-Write your name on line 6, save it, and then head back to GitHub Desktop.
+Use the Microsoft Docs Learning Path 'Fundamentals of Bicep' to build up knowledge of Bicep. Use this knowledge within Korthcore.UAT-ENV to build up a complete UAT Environment using Bicep. 
