@@ -9,3 +9,20 @@
     accessTier: 'Hot'
   }
 }
+
+resource appServicePlan 'Microsoft.Web/serverfarms@2021-03-01' = {
+  name: 'korthcore-starter'
+  location: 'australiaeast'
+  sku: {
+    name: 'F1'
+  }
+}
+
+resource appServiceApp 'Microsoft.Web/sites@2021-03-01' = {
+  name: 'korthcore-1'
+  location: 'australiaeast'
+  properties: {
+    serverFarmId: appServicePlan.id
+    httpsOnly: true
+  }
+}
