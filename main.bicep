@@ -4,7 +4,7 @@
 ])
 param environmentType string
 param location string = 'australiaeast'
-param storageAccountName string = 'korthcore${uniqueString(resourceGroup().id)}${environmentType}'
+param storageAccountName string = 'korthcore${uniqueString(resourceGroup().id)}'
 param appServiceAppName string = 'korthcore-${uniqueString(resourceGroup().id)}-${environmentType}'
 
 var appServicePlanName = 'korthcore-plan'
