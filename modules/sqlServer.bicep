@@ -15,8 +15,20 @@ param sqlDatabaseSku object = {
   tier: 'Standard'
 }
 
+@description('The name of the environment. This must be dev or prod.')
+@allowed([
+  'dev'
+  'prod'
+])
+param environmentName string = 'dev'
+
+@description('The name of the audit storage account SKU.')
+param auditStorageAccountSkuName string = 'Standard_LRS'
+
 var sqlServerName = 'kor${location}${uniqueString(resourceGroup().id)}'
 var sqlDatabaseName = 'Korthcore'
+var auditingEnabled = environmentName == 'prod'
+var auditStorageAccountName = '${take('koraudit${location}${uniqueString(resourceGroup().id)}', 24)}'
 
 resource sqlServer 'Microsoft.Sql/servers@2021-08-01-preview' = {
   name: sqlServerName
@@ -32,4 +44,23 @@ resource sqlDatabase 'Microsoft.Sql/servers/databases@2021-08-01-preview' = {
   name: sqlDatabaseName
   location: location
   sku: sqlDatabaseSku
+}
+
+resource auditStorageAccount 'Microsoft.Storage/storageAccounts@2021-08-01' = if (auditingEnabled) {
+  name: auditStorageAccountName
+  location: location
+  sku: {
+    name: auditStorageAccountSkuName
+  }
+  kind: 'StorageV2'
+}
+
+resource sqlServerAudit 'Microsoft.Sql/servers/auditingSettings@2021-08-01-preview' = if (auditingEnabled) {
+  parent: sqlServer
+  name: 'default'
+  properties: {
+    state: 'Enabled'
+    storageEndpoint: environmentName == 'prod' ? auditStorageAccount.properties.primaryEndpoints.blob : ''
+    storageAccountAccessKey: environmentName == 'prod' ? listKeys(auditStorageAccount.id, auditStorageAccount.apiVersion).keys[0].value : ''
+  }
 }
