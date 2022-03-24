@@ -18,6 +18,7 @@ param sqlDatabaseSku object = {
 @description('The name of the environment. This must be dev or prod.')
 @allowed([
   'dev'
+  'uat'
   'prod'
 ])
 param environmentName string = 'dev'
