@@ -64,3 +64,7 @@ resource sqlServerAudit 'Microsoft.Sql/servers/auditingSettings@2021-08-01-previ
     storageAccountAccessKey: environmentName == 'prod' ? listKeys(auditStorageAccount.id, auditStorageAccount.apiVersion).keys[0].value : ''
   }
 }
+
+output serverName string = sqlServer.name
+output location string = location
+output serverFullyQualifiedDomainName string = sqlServer.properties.fullyQualifiedDomainName
