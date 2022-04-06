@@ -3,23 +3,16 @@
   location: resourceGroup().location
   tags: {
     'CostCenter': '90210'
-    'Owner': 'Korthcore'
   }
   properties: {
     addressSpace: {
       addressPrefixes: [
-        '10.0.0.0/16'
+        '10.0.0.0/15'
       ]
     }
     enableVmProtection: false
     enableDdosProtection: false
     subnets: [
-      {
-        name: 'korsub001'
-        properties: {
-          addressPrefix: '10.0.0.0/24'
-        }
-      }
       {
         name: 'korsub002'
         properties: {
