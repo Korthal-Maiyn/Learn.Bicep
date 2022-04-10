@@ -1,4 +1,7 @@
-﻿var virtualNetworkName = 'Korthcore-vnet'
+﻿@description('The location into which the resources should be deployed.')
+param location string = resourceGroup().location
+
+var virtualNetworkName = 'Korthcore-vnet'
 var virtualMachineName = 'KorthcoreServer'
 var networkInterfaceName = 'korthcoreserver890'
 var publicIPAddressName = 'KorthcoreServer-ip'
@@ -6,7 +9,7 @@ var networkSecurityGroupName = 'KorthcoreServer-nsg'
 
 resource networkSecurityGroup 'Microsoft.Network/networkSecurityGroups@2020-11-01' = {
   name: networkSecurityGroupName
-  location: 'australiaeast'
+  location: location
   properties: {
     securityRules: []
   }
@@ -14,7 +17,7 @@ resource networkSecurityGroup 'Microsoft.Network/networkSecurityGroups@2020-11-0
 
 resource publicIPAddress 'Microsoft.Network/publicIPAddresses@2020-11-01' = {
   name: publicIPAddressName
-  location: 'australiaeast'
+  location: location
   sku: {
     name: 'Basic'
     tier: 'Regional'
@@ -30,7 +33,7 @@ resource publicIPAddress 'Microsoft.Network/publicIPAddresses@2020-11-01' = {
 
 resource virtualNetwork 'Microsoft.Network/virtualNetworks@2020-11-01' = {
   name: virtualNetworkName
-  location: 'australiaeast'
+  location: location
   properties: {
     addressSpace: {
       addressPrefixes: [
@@ -59,7 +62,7 @@ resource virtualNetwork 'Microsoft.Network/virtualNetworks@2020-11-01' = {
 
 resource virtualMachine 'Microsoft.Compute/virtualMachines@2021-03-01' = {
   name: virtualMachineName
-  location: 'australiaeast'
+  location: location
   properties: {
     hardwareProfile: {
       vmSize: 'Standard_D2s_v3'
@@ -116,7 +119,7 @@ resource virtualMachine 'Microsoft.Compute/virtualMachines@2021-03-01' = {
 
 resource networkInterface 'Microsoft.Network/networkInterfaces@2020-11-01' = {
   name: networkInterfaceName
-  location: 'australiaeast'
+  location: location
   properties: {
     ipConfigurations: [
       {
