@@ -1,11 +1,11 @@
-﻿param virtualNetworks_Korthcore_vnet_name string = 'Korthcore-vnet'
-param virtualMachines_KorthcoreServer_name string = 'KorthcoreServer'
-param networkInterfaces_korthcoreserver890_name string = 'korthcoreserver890'
-param publicIPAddresses_KorthcoreServer_ip_name string = 'KorthcoreServer-ip'
-param networkSecurityGroups_KorthcoreServer_nsg_name string = 'KorthcoreServer-nsg'
+﻿var virtualNetworkName = 'Korthcore-vnet'
+var virtualMachineName = 'KorthcoreServer'
+var networkInterfaceName = 'korthcoreserver890'
+var publicIPAddressName = 'KorthcoreServer-ip'
+var networkSecurityGroupName = 'KorthcoreServer-nsg'
 
 resource networkSecurityGroup 'Microsoft.Network/networkSecurityGroups@2020-11-01' = {
-  name: networkSecurityGroups_KorthcoreServer_nsg_name
+  name: networkSecurityGroupName
   location: 'australiaeast'
   properties: {
     securityRules: []
@@ -13,7 +13,7 @@ resource networkSecurityGroup 'Microsoft.Network/networkSecurityGroups@2020-11-0
 }
 
 resource publicIPAddress 'Microsoft.Network/publicIPAddresses@2020-11-01' = {
-  name: publicIPAddresses_KorthcoreServer_ip_name
+  name: publicIPAddressName
   location: 'australiaeast'
   sku: {
     name: 'Basic'
@@ -29,7 +29,7 @@ resource publicIPAddress 'Microsoft.Network/publicIPAddresses@2020-11-01' = {
 }
 
 resource virtualNetwork 'Microsoft.Network/virtualNetworks@2020-11-01' = {
-  name: virtualNetworks_Korthcore_vnet_name
+  name: virtualNetworkName
   location: 'australiaeast'
   properties: {
     addressSpace: {
@@ -58,7 +58,7 @@ resource virtualNetwork 'Microsoft.Network/virtualNetworks@2020-11-01' = {
 }
 
 resource virtualMachine 'Microsoft.Compute/virtualMachines@2021-03-01' = {
-  name: virtualMachines_KorthcoreServer_name
+  name: virtualMachineName
   location: 'australiaeast'
   properties: {
     hardwareProfile: {
@@ -73,19 +73,19 @@ resource virtualMachine 'Microsoft.Compute/virtualMachines@2021-03-01' = {
       }
       osDisk: {
         osType: 'Linux'
-        name: '${virtualMachines_KorthcoreServer_name}_disk1_23e6a144c4ea4049b3e2be24b78a9e81'
+        name: '${virtualMachineName}_disk1_23e6a144c4ea4049b3e2be24b78a9e81'
         createOption: 'FromImage'
         caching: 'ReadWrite'
         managedDisk: {
           storageAccountType: 'Premium_LRS'
-          id: resourceId('Microsoft.Compute/disks', '${virtualMachines_KorthcoreServer_name}_disk1_23e6a144c4ea4049b3e2be24b78a9e81')
+          id: resourceId('Microsoft.Compute/disks', '${virtualMachineName}_disk1_23e6a144c4ea4049b3e2be24b78a9e81')
         }
         diskSizeGB: 30
       }
       dataDisks: []
     }
     osProfile: {
-      computerName: virtualMachines_KorthcoreServer_name
+      computerName: virtualMachineName
       adminUsername: 'korthal'
       linuxConfiguration: {
         disablePasswordAuthentication: false
@@ -115,7 +115,7 @@ resource virtualMachine 'Microsoft.Compute/virtualMachines@2021-03-01' = {
 }
 
 resource networkInterface 'Microsoft.Network/networkInterfaces@2020-11-01' = {
-  name: networkInterfaces_korthcoreserver890_name
+  name: networkInterfaceName
   location: 'australiaeast'
   properties: {
     ipConfigurations: [
