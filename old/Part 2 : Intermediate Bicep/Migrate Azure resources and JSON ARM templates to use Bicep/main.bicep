@@ -4,7 +4,7 @@ param networkInterfaces_korthcoreserver890_name string = 'korthcoreserver890'
 param publicIPAddresses_KorthcoreServer_ip_name string = 'KorthcoreServer-ip'
 param networkSecurityGroups_KorthcoreServer_nsg_name string = 'KorthcoreServer-nsg'
 
-resource networkSecurityGroups_KorthcoreServer_nsg_name_resource 'Microsoft.Network/networkSecurityGroups@2020-11-01' = {
+resource networkSecurityGroup 'Microsoft.Network/networkSecurityGroups@2020-11-01' = {
   name: networkSecurityGroups_KorthcoreServer_nsg_name
   location: 'australiaeast'
   properties: {
@@ -12,7 +12,7 @@ resource networkSecurityGroups_KorthcoreServer_nsg_name_resource 'Microsoft.Netw
   }
 }
 
-resource publicIPAddresses_KorthcoreServer_ip_name_resource 'Microsoft.Network/publicIPAddresses@2020-11-01' = {
+resource publicIPAddress 'Microsoft.Network/publicIPAddresses@2020-11-01' = {
   name: publicIPAddresses_KorthcoreServer_ip_name
   location: 'australiaeast'
   sku: {
@@ -28,7 +28,7 @@ resource publicIPAddresses_KorthcoreServer_ip_name_resource 'Microsoft.Network/p
   }
 }
 
-resource virtualNetworks_Korthcore_vnet_name_resource 'Microsoft.Network/virtualNetworks@2020-11-01' = {
+resource virtualNetwork 'Microsoft.Network/virtualNetworks@2020-11-01' = {
   name: virtualNetworks_Korthcore_vnet_name
   location: 'australiaeast'
   properties: {
@@ -53,7 +53,7 @@ resource virtualNetworks_Korthcore_vnet_name_resource 'Microsoft.Network/virtual
   }
 }
 
-resource virtualMachines_KorthcoreServer_name_resource 'Microsoft.Compute/virtualMachines@2021-03-01' = {
+resource virtualMachine 'Microsoft.Compute/virtualMachines@2021-03-01' = {
   name: virtualMachines_KorthcoreServer_name
   location: 'australiaeast'
   properties: {
@@ -98,7 +98,7 @@ resource virtualMachines_KorthcoreServer_name_resource 'Microsoft.Compute/virtua
     networkProfile: {
       networkInterfaces: [
         {
-          id: networkInterfaces_korthcoreserver890_name_resource.id
+          id: networkInterface.id
         }
       ]
     }
@@ -110,8 +110,8 @@ resource virtualMachines_KorthcoreServer_name_resource 'Microsoft.Compute/virtua
   }
 }
 
-resource virtualNetworks_Korthcore_vnet_name_default 'Microsoft.Network/virtualNetworks/subnets@2020-11-01' = {
-  parent: virtualNetworks_Korthcore_vnet_name_resource
+resource defaultSubnet 'Microsoft.Network/virtualNetworks/subnets@2020-11-01' = {
+  parent: virtualNetwork
   name: 'default'
   properties: {
     addressPrefix: '10.0.0.0/24'
@@ -121,7 +121,7 @@ resource virtualNetworks_Korthcore_vnet_name_default 'Microsoft.Network/virtualN
   }
 }
 
-resource networkInterfaces_korthcoreserver890_name_resource 'Microsoft.Network/networkInterfaces@2020-11-01' = {
+resource networkInterface 'Microsoft.Network/networkInterfaces@2020-11-01' = {
   name: networkInterfaces_korthcoreserver890_name
   location: 'australiaeast'
   properties: {
@@ -132,10 +132,10 @@ resource networkInterfaces_korthcoreserver890_name_resource 'Microsoft.Network/n
           privateIPAddress: '10.0.0.4'
           privateIPAllocationMethod: 'Dynamic'
           publicIPAddress: {
-            id: publicIPAddresses_KorthcoreServer_ip_name_resource.id
+            id: publicIPAddress.id
           }
           subnet: {
-            id: virtualNetworks_Korthcore_vnet_name_default.id
+            id: defaultSubnet.id
           }
           primary: true
           privateIPAddressVersion: 'IPv4'
@@ -148,7 +148,7 @@ resource networkInterfaces_korthcoreserver890_name_resource 'Microsoft.Network/n
     enableAcceleratedNetworking: true
     enableIPForwarding: false
     networkSecurityGroup: {
-      id: networkSecurityGroups_KorthcoreServer_nsg_name_resource.id
+      id: networkSecurityGroup.id
     }
   }
 }
