@@ -37,12 +37,12 @@ var virtualMachineImageReference = {
 }
 var virtualMachineOSDiskName = 'KorthcoreServer-sda'
 
-resource networkSecurityGroup 'Microsoft.Network/networkSecurityGroups@2020-11-01' = {
+resource networkSecurityGroup 'Microsoft.Network/networkSecurityGroups@2021-05-01' = {
   name: networkSecurityGroupName
   location: location
 }
 
-resource publicIPAddress 'Microsoft.Network/publicIPAddresses@2020-11-01' = {
+resource publicIPAddress 'Microsoft.Network/publicIPAddresses@2021-05-01' = {
   name: publicIPAddressName
   location: location
   sku: {
@@ -56,7 +56,7 @@ resource publicIPAddress 'Microsoft.Network/publicIPAddresses@2020-11-01' = {
   }
 }
 
-resource virtualNetwork 'Microsoft.Network/virtualNetworks@2020-11-01' = {
+resource virtualNetwork 'Microsoft.Network/virtualNetworks@2021-05-01' = {
   name: virtualNetworkName
   location: location
   properties: {
@@ -83,7 +83,7 @@ resource virtualNetwork 'Microsoft.Network/virtualNetworks@2020-11-01' = {
   }
 }
 
-resource virtualMachine 'Microsoft.Compute/virtualMachines@2021-03-01' = {
+resource virtualMachine 'Microsoft.Compute/virtualMachines@2021-11-01' = {
   name: virtualMachineName
   location: location
   properties: {
@@ -132,7 +132,7 @@ resource virtualMachine 'Microsoft.Compute/virtualMachines@2021-03-01' = {
   }
 }
 
-resource networkInterface 'Microsoft.Network/networkInterfaces@2020-11-01' = {
+resource networkInterface 'Microsoft.Network/networkInterfaces@2021-05-01' = {
   name: networkInterfaceName
   location: location
   properties: {
