@@ -40,9 +40,6 @@ var virtualMachineOSDiskName = 'KorthcoreServer-sda'
 resource networkSecurityGroup 'Microsoft.Network/networkSecurityGroups@2020-11-01' = {
   name: networkSecurityGroupName
   location: location
-  properties: {
-    securityRules: []
-  }
 }
 
 resource publicIPAddress 'Microsoft.Network/publicIPAddresses@2020-11-01' = {
@@ -53,11 +50,9 @@ resource publicIPAddress 'Microsoft.Network/publicIPAddresses@2020-11-01' = {
     tier: 'Regional'
   }
   properties: {
-    ipAddress: '1.2.3.4'
     publicIPAddressVersion: 'IPv4'
     publicIPAllocationMethod: 'Dynamic'
     idleTimeoutInMinutes: 4
-    ipTags: []
   }
 }
 
@@ -75,13 +70,11 @@ resource virtualNetwork 'Microsoft.Network/virtualNetworks@2020-11-01' = {
         name: virtualNetworkDefaultSubnetName
         properties: {
           addressPrefix: virtualNetworkDefaultSubnetAddressPrefix
-          delegations: []
           privateEndpointNetworkPolicies: 'Enabled'
           privateLinkServiceNetworkPolicies: 'Enabled'
         }
       }
     ]
-    virtualNetworkPeerings: []
     enableDdosProtection: false
   }
 
@@ -106,11 +99,9 @@ resource virtualMachine 'Microsoft.Compute/virtualMachines@2021-03-01' = {
         caching: 'ReadWrite'
         managedDisk: {
           storageAccountType: virtualMachineManagedDiskStorageAccountType
-          id: resourceId('Microsoft.Compute/disks', '${virtualMachineName}_disk1_23e6a144c4ea4049b3e2be24b78a9e81')
         }
         diskSizeGB: 30
       }
-      dataDisks: []
     }
     osProfile: {
       computerName: virtualMachineName
@@ -124,9 +115,7 @@ resource virtualMachine 'Microsoft.Compute/virtualMachines@2021-03-01' = {
           assessmentMode: 'ImageDefault'
         }
       }
-      secrets: []
       allowExtensionOperations: true
-      requireGuestProvisionSignal: true
     }
     networkProfile: {
       networkInterfaces: [
@@ -151,7 +140,6 @@ resource networkInterface 'Microsoft.Network/networkInterfaces@2020-11-01' = {
       {
         name: 'ipconfig1'
         properties: {
-          privateIPAddress: '10.0.0.4'
           privateIPAllocationMethod: 'Dynamic'
           publicIPAddress: {
             id: publicIPAddress.id
@@ -164,9 +152,6 @@ resource networkInterface 'Microsoft.Network/networkInterfaces@2020-11-01' = {
         }
       }
     ]
-    dnsSettings: {
-      dnsServers: []
-    }
     enableAcceleratedNetworking: true
     enableIPForwarding: false
     networkSecurityGroup: {
