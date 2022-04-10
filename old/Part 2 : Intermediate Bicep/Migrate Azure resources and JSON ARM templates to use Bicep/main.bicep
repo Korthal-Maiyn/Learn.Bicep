@@ -51,6 +51,10 @@ resource virtualNetwork 'Microsoft.Network/virtualNetworks@2020-11-01' = {
     virtualNetworkPeerings: []
     enableDdosProtection: false
   }
+
+  resource defaultSubnet 'subnets' existing = {
+    name: 'default'
+  }
 }
 
 resource virtualMachine 'Microsoft.Compute/virtualMachines@2021-03-01' = {
@@ -110,17 +114,6 @@ resource virtualMachine 'Microsoft.Compute/virtualMachines@2021-03-01' = {
   }
 }
 
-resource defaultSubnet 'Microsoft.Network/virtualNetworks/subnets@2020-11-01' = {
-  parent: virtualNetwork
-  name: 'default'
-  properties: {
-    addressPrefix: '10.0.0.0/24'
-    delegations: []
-    privateEndpointNetworkPolicies: 'Enabled'
-    privateLinkServiceNetworkPolicies: 'Enabled'
-  }
-}
-
 resource networkInterface 'Microsoft.Network/networkInterfaces@2020-11-01' = {
   name: networkInterfaces_korthcoreserver890_name
   location: 'australiaeast'
@@ -135,7 +128,7 @@ resource networkInterface 'Microsoft.Network/networkInterfaces@2020-11-01' = {
             id: publicIPAddress.id
           }
           subnet: {
-            id: defaultSubnet.id
+            id: virtualNetwork::defaultSubnet.id
           }
           primary: true
           privateIPAddressVersion: 'IPv4'
